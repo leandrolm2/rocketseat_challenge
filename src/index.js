@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 
@@ -10,32 +10,71 @@ app.use(express.json());
 
 const users = [];
 
-function checksExistsUserAccount(request, response, next) {
-  
+function checksExistsUserAccount(req, res, next) {
+  const { username } = req.headers;
+
+  const user = users.find((user) => user.username === username);
+
+  if (!user) {
+    return res
+      .status(404)
+      .json({ error: "user not found" });
+  }
+
+  req.user = user;
+
+  return next();
 }
 
-app.post('/users', (request, response) => {
-  
+app.post("/users", (req, res) => {
+  const { name, username } = req.body;
+
+  const useralreadyExist = users.some(user => user.username === username);
+
+  if (useralreadyExist) {
+    return res.status(400).json({ error: "user already exist" });
+  }
+
+  users.push({
+    id: uuidv4,
+    name,
+    username,
+    todos: [],
+  });
+
+  return res.status(201).send();
 });
 
-app.get('/todos', checksExistsUserAccount, (request, response) => {
-  
+app.get("/todos", checksExistsUserAccount, (req, res) => {
+  const { user } = req;
+
+  return res.json(user.todos);
 });
 
-app.post('/todos', checksExistsUserAccount, (request, response) => {
-  
+app.post("/todos", checksExistsUserAccount, (req, res) => {
+  const { title, deadline } = req.body;
+
+  const { user } = req;
+
+  const todosDetails = {
+    id,
+    title,
+    done: false, 
+    deadline: new Date(deadline), 
+    created_at: new Date 
+  };
+
+  user.todos.push(todosDetails)
+
+  return res.status(201).send()
 });
 
-app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
-  
+app.put("/todos/:id", checksExistsUserAccount, (req, res) => {
+
 });
 
-app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  
-});
+app.patch("/todos/:id/done", checksExistsUserAccount, (req, res) => {});
 
-app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  
-});
+app.delete("/todos/:id", checksExistsUserAccount, (req, res) => {});
 
 module.exports = app;
