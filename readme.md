@@ -7,7 +7,7 @@ For this project I was challenged to make a "todo", as for the requirements I wi
  - - - - 
 
 - [ ] Make a new *todo*;
-- [ ] List all the *todo*;
+- [x] List all the *todo*;
 - [ ] Be able to change the `title` and `deadline`;
 - [ ] Check the *todo*;
 - [ ] Be able to delete a *todo*;
