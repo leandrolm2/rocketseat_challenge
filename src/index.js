@@ -53,6 +53,7 @@ app.get("/todos", checksExistsUserAccount, (req, res) => {
 
 app.post("/todos", checksExistsUserAccount, (req, res) => {
   const { user } = req;
+  
   const { title, deadline } = req.body;
 
   const todosDetails = {
