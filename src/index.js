@@ -53,7 +53,7 @@ app.get("/todos", checksExistsUserAccount, (req, res) => {
 
 app.post("/todos", checksExistsUserAccount, (req, res) => {
   const { user } = req;
-  
+
   const { title, deadline } = req.body;
 
   const todosDetails = {
@@ -69,7 +69,29 @@ app.post("/todos", checksExistsUserAccount, (req, res) => {
   return res.status(201).send();
 });
 
-app.put("/todos/:id", checksExistsUserAccount, (req, res) => {});
+/**
+ * os "params" são os parâmetros da rota, ou seja, aquilo que é passado pelo link
+ */
+app.put("/todos/:id", checksExistsUserAccount, (req, res) => {
+  const { user } = req;
+  const { title, deadline } = req.body;
+  const { id } = req.params;
+
+  /**
+   * usando esse metodo somento o "todos" já existente será atualizado
+   */
+  const todo = user.todos.find(todo => todo.id === id);
+
+  if(!todo){
+    return res.status(404).json({error: 'user not found'})
+  }
+
+  todo.title = title
+  todo.deadline = new Date(deadline)
+  
+  
+  return res.status(201).send();
+});
 
 app.patch("/todos/:id/done", checksExistsUserAccount, (req, res) => {});
 
