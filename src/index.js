@@ -16,9 +16,7 @@ function checksExistsUserAccount(req, res, next) {
   const user = users.find((user) => user.username === username);
 
   if (!user) {
-    return res
-      .status(404)
-      .json({ error: "user not found" });
+    return res.status(404).json({ error: "user not found" });
   }
 
   req.user = user;
@@ -29,18 +27,20 @@ function checksExistsUserAccount(req, res, next) {
 app.post("/users", (req, res) => {
   const { name, username } = req.body;
 
-  const useralreadyExist = users.some(user => user.username === username);
+  const useralreadyExist = users.find((user) => user.username === username);
 
   if (useralreadyExist) {
     return res.status(400).json({ error: "user already exist" });
   }
 
-  users.push({
-    id: uuidv4,
+  const user = {
+    id: uuidv4(),
     name,
     username,
     todos: [],
-  });
+  };
+
+  users.push(user);
 
   return res.status(201).send();
 });
@@ -52,26 +52,23 @@ app.get("/todos", checksExistsUserAccount, (req, res) => {
 });
 
 app.post("/todos", checksExistsUserAccount, (req, res) => {
+  const { user } = req;
   const { title, deadline } = req.body;
 
-  const { user } = req;
-
   const todosDetails = {
-    id,
+    id: uuidv4(),
     title,
-    done: false, 
-    deadline: new Date(deadline), 
-    created_at: new Date 
+    done: false,
+    deadline: new Date(deadline),
+    created_at: new Date(),
   };
 
-  user.todos.push(todosDetails)
+  user.todos.push(todosDetails);
 
-  return res.status(201).send()
+  return res.status(201).send();
 });
 
-app.put("/todos/:id", checksExistsUserAccount, (req, res) => {
-
-});
+app.put("/todos/:id", checksExistsUserAccount, (req, res) => {});
 
 app.patch("/todos/:id/done", checksExistsUserAccount, (req, res) => {});
 
