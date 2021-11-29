@@ -4,7 +4,7 @@
   "main": "src/server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon src/server.js",
     "test": "jest"
   },
   "dependencies": {
@@ -16,5 +16,7 @@
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.3"
-  }
+  },
+  "repository": "https://github.com/leandrolm2/rocketseat_challenge.git",
+  "author": "leandrolm2 <leandromelgarejo@hotmail.com>"
 }
