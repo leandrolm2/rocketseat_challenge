@@ -13,10 +13,10 @@ const users = [];
 function checksExistsUserAccount(req, res, next) {
   const { username } = req.headers;
 
-  const user = users.find((user) => user.username === username);
+  const user = users.find(user => user.username === username);
 
   if (!user) {
-    return res.status(404).json({ error: "user not found" });
+    return res.status(404).json({ error: "muleque not found" });
   }
 
   req.user = user;
@@ -27,11 +27,11 @@ function checksExistsUserAccount(req, res, next) {
 app.post("/users", (req, res) => {
   const { name, username } = req.body;
 
-  const useralreadyExist = users.find((user) => user.username === username);
+  const useralreadyExist = users.find(user => user.username === username);
 
   if (useralreadyExist) {
     return res.status(400).json({ error: "user already exist" });
-  }
+  };
 
   const user = {
     id: uuidv4(),
@@ -66,7 +66,7 @@ app.post("/todos", checksExistsUserAccount, (req, res) => {
 
   user.todos.push(todosDetails);
 
-  return res.status(201).send();
+  return res.status(201).json(todosDetails);
 });
 
 /**
@@ -83,17 +83,19 @@ app.put("/todos/:id", checksExistsUserAccount, (req, res) => {
   const todo = user.todos.find(todo => todo.id === id);
 
   if(!todo){
-    return res.status(404).json({error: 'user not found'})
-  }
+    return res.status(404).json({error: 'todos not found'})
+  };
 
-  todo.title = title
-  todo.deadline = new Date(deadline)
+  todo.title = title;
+  todo.deadline = new Date(deadline);
   
   
   return res.status(201).send();
 });
 
-app.patch("/todos/:id/done", checksExistsUserAccount, (req, res) => {});
+app.patch("/todos/:id/done", checksExistsUserAccount, (req, res) => {
+  
+});
 
 app.delete("/todos/:id", checksExistsUserAccount, (req, res) => {});
 
