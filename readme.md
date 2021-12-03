@@ -3,7 +3,7 @@
 
 :wave: Hi everyone!
 
-For this project, I was challenged to make a "todo", as for the requirements I will have a list for you guys to follow along:
+For this project I was challenged to make a "todo", as for the requirements I will have a list for you guys to follow along:
  - - - - 
 
 - [x] Make a new *todo*;
